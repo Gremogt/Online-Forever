@@ -6,9 +6,9 @@ import requests
 import websocket
 from keep_alive import keep_alive
 
-status = "idle" #online/dnd/idle
+status = "idle"  # online/dnd/idle
 
-custom_status = "NixonNNodes.com" #If you don't need a custom status on your profile, just put "" instead of "youtube.com/@SealedSaucer"
+custom_status = "NixonNNodes.com"  # If you don't need a custom status on your profile, just put "" instead of "youtube.com/@SealedSaucer"
 
 usertoken = os.getenv("TOKEN")
 if not usertoken:
@@ -27,9 +27,9 @@ username = userinfo["username"]
 discriminator = userinfo["discriminator"]
 userid = userinfo["id"]
 
+
 def onliner(token, status):
-    ws = websocket.WebSocket()
-    ws.connect("wss://gateway.discord.gg/?v=9&encoding=json")
+    ws = websocket.create_connection("wss://gateway.discord.gg/?v=9&encoding=json")
     start = json.loads(ws.recv())
     heartbeat = start["d"]["heartbeat_interval"]
     auth = {
@@ -57,12 +57,12 @@ def onliner(token, status):
                     "state": custom_status,
                     "name": "Custom Status",
                     "id": "custom",
-                    #Uncomment the below lines if you want an emoji in the status
-                    #"emoji": {
-                        #"name": "emoji name",
-                        #"id": "emoji id",
-                        #"animated": False,
-                    #},
+                    # Uncomment the below lines if you want an emoji in the status
+                    # "emoji": {
+                    # "name": "emoji name",
+                    # "id": "emoji id",
+                    # "animated": False,
+                    # },
                 }
             ],
             "status": status,
@@ -74,12 +74,14 @@ def onliner(token, status):
     time.sleep(heartbeat / 1000)
     ws.send(json.dumps(online))
 
+
 def run_onliner():
     os.system("clear")
     print(f"Logged in as {username}#{discriminator} ({userid}).")
     while True:
         onliner(usertoken, status)
         time.sleep(30)
+
 
 keep_alive()
 run_onliner()

@@ -29,7 +29,8 @@ userid = userinfo["id"]
 
 
 def onliner(token, status):
-    ws = websocket.create_connection("wss://gateway.discord.gg/?v=9&encoding=json")
+    ws = websocket.WebSocket()
+    ws.connect("wss://gateway.discord.gg/?v=9&encoding=json")
     start = json.loads(ws.recv())
     heartbeat = start["d"]["heartbeat_interval"]
     auth = {
@@ -57,12 +58,6 @@ def onliner(token, status):
                     "state": custom_status,
                     "name": "Custom Status",
                     "id": "custom",
-                    # Uncomment the below lines if you want an emoji in the status
-                    # "emoji": {
-                    # "name": "emoji name",
-                    # "id": "emoji id",
-                    # "animated": False,
-                    # },
                 }
             ],
             "status": status,
